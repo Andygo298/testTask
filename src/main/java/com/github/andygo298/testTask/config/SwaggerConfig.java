@@ -1,4 +1,4 @@
-package com.github.andygo298.testTask.swagger;
+package com.github.andygo298.testTask.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +31,7 @@ public class SwaggerConfig {
 
         Contact contact = new Contact("Andrew Lozouski","https://www.linkedin.com/in/andrei-lozouski/","andygo298@gmail.com");
 
-        StringVendorExtension listVendorExtension = new StringVendorExtension("Test task for 'RESLIV' company", "Candidate");
+        StringVendorExtension listVendorExtension = new StringVendorExtension("Test task", "Candidate");
         ApiInfo apiInfo = new ApiInfo("Town info RestFul Service API",
                 "Town RestFul Service",
                 "1.0",

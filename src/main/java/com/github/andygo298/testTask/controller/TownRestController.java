@@ -29,7 +29,7 @@ public class TownRestController {
     }
 
     Function<Long, ResponseStatusException> notFoundId = (id) -> {
-        return new ResponseStatusException(HttpStatus.NOT_FOUND, "No Town Available with the given Id - " + id);
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Town Available with the given Id - " + id);
     };
 
     Function<String, ResponseStatusException> notFoundName = (name) -> {
@@ -39,26 +39,6 @@ public class TownRestController {
     Supplier<ResponseStatusException> serverError = () -> {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "RunTimeException from Town Service");
     };
-
-    /*@GetMapping("/towns")
-    public ResponseEntity<List<Town>> getAllTowns(@RequestParam(required = false) String name) {
-        try {
-            List<Town> towns = new ArrayList<>();
-
-            if (name == null)
-                townRepository.findAll().forEach(towns::add);
-            else
-            towns = townRepository.findByTownNameLike(name);
-
-            if (towns.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(towns, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
 
     @ApiOperation("Returns the town using the town name passed as part of the request.")
     @ApiResponses(
