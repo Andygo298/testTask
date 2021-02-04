@@ -50,7 +50,7 @@ public class TownRestController {
     @GetMapping("/town")
     public ResponseEntity<Town> getTownByName(@RequestParam String name) {
         log.info("Received the request to search by town name - {} .", name);
-        Optional<Town> townOptional = townRepository.findByTownName(name);
+        Optional<Town> townOptional = townRepository.findByTownName(name.toLowerCase().trim());
         if (townOptional.isPresent()) {
             log.info("Response is : {}", townOptional.get());
             return ResponseEntity.status(HttpStatus.OK).body(townOptional.get());
@@ -153,7 +153,7 @@ public class TownRestController {
     public ResponseEntity<Town> updateTownByName(@RequestParam String name, @RequestBody Town town) {
         log.info("Received the request to update the town. " +
                 "Town name is {} and the updated town details are {} ", name, town);
-        Optional<Town> optionalTown = townRepository.findByTownName(name);
+        Optional<Town> optionalTown = townRepository.findByTownName(name.toLowerCase().trim());
         if (optionalTown.isPresent()) {
             Town updTown = optionalTown.get();
             updTown.setTownName(town.getTownName());

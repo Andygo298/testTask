@@ -21,10 +21,12 @@ public class TelegramFacade {
     private UserDataCache userDataCache;
     private SimpleTownInfoTelegramBot simpleTownInfoTelegramBot;
     private MainMenuService mainMenuService;
+    private ReplyMessageService replyMessageService;
 
-    public TelegramFacade(BotStateContext botStateContext, UserDataCache userDataCache,
+    public TelegramFacade(BotStateContext botStateContext, UserDataCache userDataCache, ReplyMessageService replyMessageService,
                           @Lazy SimpleTownInfoTelegramBot simpleTownInfoTelegramBot, MainMenuService mainMenuService) {
         this.botStateContext = botStateContext;
+        this.replyMessageService = replyMessageService;
         this.userDataCache = userDataCache;
         this.simpleTownInfoTelegramBot = simpleTownInfoTelegramBot;
         this.mainMenuService = mainMenuService;
@@ -65,9 +67,6 @@ public class TelegramFacade {
             case "ИНФО":
                 botState = BotState.SHOW_INFO_MENU;
                 break;
-            case "ASK_TOWN":
-                botState = BotState.ASK_TOWN;
-                break;
             default:
                 botState = userDataCache.getUsersCurrentBotState(userId);
                 break;
@@ -80,11 +79,15 @@ public class TelegramFacade {
     private BotApiMethod<?> processCallbackQuery(CallbackQuery buttonQuery) {
         final String chatId = buttonQuery.getMessage().getChatId().toString();
         final int userId = buttonQuery.getFrom().getId();
-        BotApiMethod<?> callBackAnswer = mainMenuService.getMainMenuMessage(chatId, "Введи название города чтобы получить информацию:");
+        BotApiMethod<?> callBackAnswer = null;
 
+        if ("buttonContinue".equals(buttonQuery.getData())){
+           callBackAnswer = mainMenuService.getMainMenuMessage(chatId, replyMessageService.getReplyText("reply.input_town"));
+           userDataCache.setUsersCurrentBotState(Integer.parseInt(chatId), BotState.ASK_TOWN);
+        }
 
         if ("buttonInfo".equals(buttonQuery.getData())) {
-            callBackAnswer = new SendMessage(chatId, "куча инфы будя тута");
+            callBackAnswer = new SendMessage(chatId, replyMessageService.getReplyText("reply.info_text"));
             userDataCache.setUsersCurrentBotState(userId, BotState.START_ECHO);
         }
         return callBackAnswer;
