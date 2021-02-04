@@ -12,7 +12,6 @@ public class SimpleTownInfoTelegramBot extends TelegramWebhookBot {
     private String webHookPath;
     private String botUserName;
     private String botToken;
-
     private TelegramFacade telegramFacade;
 
     public SimpleTownInfoTelegramBot(TelegramFacade telegramFacade) {
@@ -36,8 +35,6 @@ public class SimpleTownInfoTelegramBot extends TelegramWebhookBot {
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        final BotApiMethod<?> replyMessageToUser = telegramFacade.handleUpdate(update);
-
-        return replyMessageToUser;
+        return telegramFacade.handleUpdate(update);
     }
 }

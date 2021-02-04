@@ -10,7 +10,6 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
-
 @Entity
 @Table(name = "TOWN")
 @Data
@@ -42,7 +41,7 @@ public class Town {
 
     @NotBlank
     @Column(name = "town_info")
-    @ApiModelProperty("Represents the information about the town.")
+    @ApiModelProperty("Represents the facts about the town.")
     String townInfo;
 
 }

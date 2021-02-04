@@ -23,7 +23,6 @@ public class TownRestController {
 
     TownRepository townRepository;
 
-
     public TownRestController(TownRepository townRepository) {
         this.townRepository = townRepository;
     }
