@@ -18,7 +18,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-
         List<FieldError> fieldError = ex.getBindingResult().getFieldErrors();
         List<String> errorFields = new ArrayList<>();
         for (FieldError error : fieldError) {
@@ -26,7 +25,6 @@ public class GlobalExceptionHandler {
         }
         String errorMsg = "Please pass all the input fields : " + errorFields.stream().sorted().collect(Collectors.toList()).toString();
         log.info("ErrorMessage : " + errorMsg);
-
         return new ResponseEntity<>(errorMsg, HttpStatus.BAD_REQUEST);
     }
 }

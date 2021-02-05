@@ -23,13 +23,12 @@ public class TownRestController {
 
     TownRepository townRepository;
 
-
     public TownRestController(TownRepository townRepository) {
         this.townRepository = townRepository;
     }
 
     Function<Long, ResponseStatusException> notFoundId = (id) -> {
-        return new ResponseStatusException(HttpStatus.NOT_FOUND, "No Town Available with the given Id - " + id);
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Town Available with the given Id - " + id);
     };
 
     Function<String, ResponseStatusException> notFoundName = (name) -> {
@@ -39,26 +38,6 @@ public class TownRestController {
     Supplier<ResponseStatusException> serverError = () -> {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "RunTimeException from Town Service");
     };
-
-    /*@GetMapping("/towns")
-    public ResponseEntity<List<Town>> getAllTowns(@RequestParam(required = false) String name) {
-        try {
-            List<Town> towns = new ArrayList<>();
-
-            if (name == null)
-                townRepository.findAll().forEach(towns::add);
-            else
-            towns = townRepository.findByTownNameLike(name);
-
-            if (towns.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(towns, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
 
     @ApiOperation("Returns the town using the town name passed as part of the request.")
     @ApiResponses(
@@ -70,7 +49,7 @@ public class TownRestController {
     @GetMapping("/town")
     public ResponseEntity<Town> getTownByName(@RequestParam String name) {
         log.info("Received the request to search by town name - {} .", name);
-        Optional<Town> townOptional = townRepository.findByTownName(name);
+        Optional<Town> townOptional = townRepository.findByTownName(name.toLowerCase().trim());
         if (townOptional.isPresent()) {
             log.info("Response is : {}", townOptional.get());
             return ResponseEntity.status(HttpStatus.OK).body(townOptional.get());
@@ -173,7 +152,7 @@ public class TownRestController {
     public ResponseEntity<Town> updateTownByName(@RequestParam String name, @RequestBody Town town) {
         log.info("Received the request to update the town. " +
                 "Town name is {} and the updated town details are {} ", name, town);
-        Optional<Town> optionalTown = townRepository.findByTownName(name);
+        Optional<Town> optionalTown = townRepository.findByTownName(name.toLowerCase().trim());
         if (optionalTown.isPresent()) {
             Town updTown = optionalTown.get();
             updTown.setTownName(town.getTownName());
