@@ -14,7 +14,7 @@
 ```
 - После чего потребуется также установить webhook url для api.telegram.org
 - Пример запроса выглядит следующим образом :
-    - `https://api.telegram.org/YOUR_BOT_TOKEN/setWebhook?url=YOUR WEB HOOK PATH`
+    - `https://api.telegram.org/botYOUR_BOT_TOKEN/setWebhook?url=YOUR WEB HOOK PATH`
 
 
 * В проекте используется in-memory db H2. И для наполнения БД некоторыми данными во время запуска приложения присутствует файл `data.sql`
